@@ -35,8 +35,25 @@ let getWebHook = (req, res) => {
     }
   }
 };
+function firstTrait(nlp, name) {
+  console.log("nlp entities-----",nlp.entities);
+  return nlp && nlp.entities && nlp.traits[name] && nlp.traits[name][0];
+}
 
-async function handleMessage(sender_psid, received_message) {
+async function handleMessage(sender_psid,message) {
+  let response ={
+    "text" :"You can start again with just saying Hi."
+  }
+  console.log("message--",message)
+  const greeting = firstTrait(message.nlp, 'wit$greetings');
+  if (greeting && greeting.confidence > 0.8) {
+     response.text ="Please enter your birthdate.(Format:YYYY-MM-DD)";
+  } else if(BirthDate && BirthDate.confidence>0.8) { 
+      response.text ="Please enter your birthdate.(Format:YYYY-MM-DD)"; 
+  }
+  await callSendAPI(sender_psid, response);
+}
+async function _handleMessage(sender_psid, received_message) {
   let response;
   if (received_message.text) {    
     response = {
