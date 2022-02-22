@@ -36,6 +36,7 @@ let getWebHook = (req, res) => {
 };
 function firstTrait(nlp, name) {
 //  console.log("nlp entities-----",JSON.stringify(nlp,null,2));
+  console.log(nlp.traits[name])
   return nlp && nlp.entities && nlp.traits[name] && nlp.traits[name][0];
 }
 
@@ -64,7 +65,9 @@ async function handleMessage(sender_psid,message) {
           "payload":"quick_no",
         }
       ]
-  }else if(sentiment && sentiment.confidence>0.7){
+  }else if(message.sentiment && message.sentiment.confidence>0.7
+    && (message.sentiment.value == 'positive'|| message.sentiment.value == "negative" )
+    ){
     if(message.quick_replies && message.quick_replies.payload == "quick_yes"){
       response.text = "good"
 
