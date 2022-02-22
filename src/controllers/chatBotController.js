@@ -2,10 +2,11 @@ require("dotenv").config();
 let postWebHook = (req, res) => {
   l; // Parse the request body from the POST
   let body = req.body;
-
+    console.log("post webhook called")
   // Check the webhook event is from a Page subscription
   if (body.object === "page") {
     // Iterate over each entry - there may be multiple if batched
+    console.log("body entry",body.entry)
     body.entry.forEach(function (entry) {
       // Get the webhook event. entry.messaging is an array, but
       // will only ever contain one event, so we get index 0
@@ -17,7 +18,7 @@ let postWebHook = (req, res) => {
       let sender_psid = webhook_event.sender.id;
       console.log("Sender PSID: " + sender_psid);
     });
-
+    console.log("returning")
     // Return a '200 OK' response to all events
     res.status(200).send("EVENT_RECEIVED");
   } else {
