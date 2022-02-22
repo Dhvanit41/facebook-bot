@@ -65,7 +65,7 @@ async function handleMessage(sender_psid,message) {
           "payload":"quick_no",
         }
       ]
-  }else if(BirthDate.confidence>0.7){
+  }else if(sentiment && sentiment.confidence>0.7){
     response.text = "Good Bye!"
   }
   await callSendAPI(sender_psid, response);
