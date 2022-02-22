@@ -1,6 +1,5 @@
 require("dotenv").config();
 let postWebHook = (req, res) => {
-  l; // Parse the request body from the POST
   let body = req.body;
     console.log("post webhook called")
   // Check the webhook event is from a Page subscription
