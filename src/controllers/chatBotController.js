@@ -36,7 +36,7 @@ let getWebHook = (req, res) => {
   }
 };
 function firstTrait(nlp, name) {
-  console.log("nlp entities-----",nlp.entities);
+  console.log("nlp entities-----",nlp);
   return nlp && nlp.entities && nlp.traits[name] && nlp.traits[name][0];
 }
 
