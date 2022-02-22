@@ -49,7 +49,7 @@ async function handleMessage(sender_psid,message) {
   const greeting = firstTrait(message.nlp, 'wit$greetings');
   const BirthDate = firstTrait(message.nlp, 'wit$datetime');
   const sentiment = firstTrait(message.nlp, 'wit$sentiment');
-  console.log("sentiment",sentiment)
+  console.log("sentiment",sentiment.message.sentiment)
   if (greeting && greeting.confidence > 0.8) {
      response.text ="Please enter your birthdate.(Format:YYYY-MM-DD)";
   } else if(isGoodDate(message.text)) { 
@@ -68,10 +68,10 @@ async function handleMessage(sender_psid,message) {
   }else if(message.sentiment && message.sentiment.confidence>0.7
     && (message.sentiment.value == 'positive'|| message.sentiment.value == "negative" )
     ){
-    if(message.quick_replies && message.quick_replies.payload == "quick_yes"){
+    if((message.sentiment.value == 'positive')||message.quick_replies && message.quick_replies.payload == "quick_yes"){
       response.text = "good"
 
-    }else if (message.quick_replies && message.quick_replies.payload == "quick_no"){
+    }else if ((message.sentiment.value == "negative")||message.quick_replies && message.quick_replies.payload == "quick_no"){
       response.text = "Good Bye!"
       await callSendAPI(sender_psid, response);
       response ={
