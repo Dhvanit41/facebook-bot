@@ -40,12 +40,21 @@ async function handleMessage(sender_psid, received_message) {
   let response;
   if (received_message.text) {    
     response = {
-      "text": `You sent the message: "${received_message.text}". Now send me an image!`
+      "text": `Hi There! What is your name?`
     }
-  }  
-    await callSendAPI(sender_psid, response);    
+    await callSendAPI(sender_psid, response);
+  }     
 }
-function handlePostback(sender_psid, received_postback) {}
+
+async function handlePostback(sender_psid, received_postback) {
+  let response;
+  let payload = received_postback.payload;
+  if (payload === 'yes') {
+    response = { "text": "Thanks!" }
+  } else if (payload === 'no') 
+    response = { "text": "Good Bye!" }
+  await callSendAPI(sender_psid, response);
+}
 
 module.exports = {
   postWebHook,
