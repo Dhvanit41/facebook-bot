@@ -1,6 +1,5 @@
 require("dotenv").config();
 const {callSendAPI} = require('./utils')
-const request = require('request');
 let postWebHook = (req, res) => {
   let body = req.body;
   if (body.object === "page") {
