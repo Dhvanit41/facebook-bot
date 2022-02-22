@@ -1,22 +1,22 @@
 require("dotenv").config();
-const {callSendAPI,isGoodDate} = require('./utils')
-async function postWebHook(req,res) {
+const { callSendAPI, isGoodDate } = require("./utils");
+async function postWebHook(req, res) {
   let body = req.body;
   if (body.object === "page") {
     body.entry.forEach(function (entry) {
       let webhook_event = entry.messaging[0];
       let sender_psid = webhook_event.sender.id;
       if (webhook_event.message && !webhook_event.message.is_echo) {
-         handleMessage(sender_psid, webhook_event.message);
+        handleMessage(sender_psid, webhook_event.message);
       } else if (webhook_event.postback) {
-         handlePostback(sender_psid, webhook_event.postback);
+        handlePostback(sender_psid, webhook_event.postback);
       }
     });
     res.status(200).send("EVENT_RECEIVED");
   } else {
     res.sendStatus(404);
   }
-};
+}
 
 let getWebHook = (req, res) => {
   let mode = req.query["hub.mode"];
@@ -35,75 +35,66 @@ let getWebHook = (req, res) => {
   }
 };
 function firstTrait(nlp, name) {
-//  console.log("nlp entities-----",JSON.stringify(nlp,null,2));
-  console.log(nlp.traits[name])
+  //  console.log("nlp entities-----",JSON.stringify(nlp,null,2));
+  console.log(nlp.traits[name]);
   return nlp && nlp.entities && nlp.traits[name] && nlp.traits[name][0];
 }
 
-async function handleMessage(sender_psid,message) {
-  let response ={
-    "text" :"You can start again with just saying Hi."
-  }
+async function handleMessage(sender_psid, message) {
+  let response = {
+    text: "You can start again with just saying Hi.",
+  };
 
-  console.log("message--------------",message)
-  const greeting = firstTrait(message.nlp, 'wit$greetings');
-  const BirthDate = firstTrait(message.nlp, 'wit$datetime');
-  const sentiment = firstTrait(message.nlp, 'wit$sentiment');
-  console.log("sentiment",sentiment,message.sentiment)
+  console.log("message--------------", message);
+  const greeting = firstTrait(message.nlp, "wit$greetings");
+  const BirthDate = firstTrait(message.nlp, "wit$datetime");
+  const sentiment = firstTrait(message.nlp, "wit$sentiment");
+  console.log("sentiment", sentiment, message.sentiment);
   if (greeting && greeting.confidence > 0.8) {
-     response.text ="Please enter your birthdate.(Format:YYYY-MM-DD)";
-  } else if(isGoodDate(message.text)) { 
-      response.text ="Do You want to know how many days left till your next birthday?", 
-      response.quick_replies = [
+    response.text = "Please enter your birthdate.(Format:YYYY-MM-DD)";
+  } else if (isGoodDate(message.text)) {
+    (response.text =
+      "Do You want to know how many days left till your next birthday?"),
+      (response.quick_replies = [
         {
-          "content_type":"text",
-          "title":"Yes",
-          "payload":"quick_yes",
-        },{
-          "content_type":"text",
-          "title":"No",
-          "payload":"quick_no",
-        }
-      ]
-  }else if(message.sentiment && message.sentiment.confidence>0.7
-    && (message.sentiment.value == 'positive'|| message.sentiment.value == "negative" )
-    ){
-    if((message.sentiment.value == 'positive')||message.quick_replies && message.quick_replies.payload == "quick_yes"){
-      response.text = "good"
-
-    }else if ((message.sentiment.value == "negative")||message.quick_replies && message.quick_replies.payload == "quick_no"){
-      response.text = "Good Bye!"
+          content_type: "text",
+          title: "Yes",
+          payload: "quick_yes",
+        },
+        {
+          content_type: "text",
+          title: "No",
+          payload: "quick_no",
+        },
+      ]);
+  } else if (message.text == "yes" || message.text == "no" ){
+      response.text = "Good Bye!";
       await callSendAPI(sender_psid, response);
-      response ={
-        "text" :"You can start again with just saying Hi."
+      response = {
+        text: "You can start again with just saying Hi.",
       }
-    }
   }
   await callSendAPI(sender_psid, response);
 }
 async function _handleMessage(sender_psid, received_message) {
   let response;
-  if (received_message.text) {    
+  if (received_message.text) {
     response = {
-      "text": `Hi There! What is your name?`
-    }
+      text: `Hi There! What is your name?`,
+    };
     await callSendAPI(sender_psid, response);
-  }     
+  }
 }
 
 async function handlePostback(sender_psid, received_postback) {
   let response;
   let payload = received_postback.payload;
-  if (payload === 'yes') {
-    response = { "text": "Thanks!" }
-  } else if (payload === 'no') 
-    response = { "text": "Good Bye!" }
+  if (payload === "yes") {
+    response = { text: "Thanks!" };
+  } else if (payload === "no") response = { text: "Good Bye!" };
 
   await callSendAPI(sender_psid, response);
 }
-
-
-
 
 module.exports = {
   postWebHook,
