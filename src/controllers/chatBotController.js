@@ -51,7 +51,7 @@ async function handleMessage(sender_psid,message) {
   console.log({greeting,BirthDate})
   if (greeting && greeting.confidence > 0.8) {
      response.text ="Please enter your birthdate.(Format:YYYY-MM-DD)";
-  } else if((BirthDate && BirthDate.confidence>0.7)|| phone_number && phone_number.confidence>0.7) { 
+  } else if((BirthDate && BirthDate.confidence>0.7)|| (phone_number && phone_number.confidence>0.7)) { 
       response.text ="Do You want to know how many days left till your next birthday?", 
       response.quick_replies = [
         {
