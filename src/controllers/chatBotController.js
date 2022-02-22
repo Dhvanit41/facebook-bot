@@ -46,6 +46,7 @@ async function handleMessage(sender_psid,message) {
   }
   console.log("message--",message)
   const greeting = firstTrait(message.nlp, 'wit$greetings');
+  const BirthDate = firstTrait(message.nlp, 'wit$Date/Time');
   if (greeting && greeting.confidence > 0.8) {
      response.text ="Please enter your birthdate.(Format:YYYY-MM-DD)";
   } else if(BirthDate && BirthDate.confidence>0.8) { 
