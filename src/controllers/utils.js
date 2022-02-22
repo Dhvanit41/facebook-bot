@@ -14,7 +14,6 @@ async function callSendAPI(sender_psid, response) {
       method: "POST",
       data: request_body,
     }
-    console.log("req",req)
     let res = await axios(req);
     return res;
   } catch (e) {
