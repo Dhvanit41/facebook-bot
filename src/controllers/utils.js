@@ -16,7 +16,7 @@ async function callSendAPI(sender_psid, response) {
     });
     return res;
   } catch (e) {
-    console.log("error",e);
+    console.log("error",e.data)
     throw new Error(e);
   }
 }
