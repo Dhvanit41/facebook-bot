@@ -49,10 +49,10 @@ async function handleMessage(sender_psid,message) {
   const greeting = firstTrait(message.nlp, 'wit$greetings');
   const BirthDate = firstTrait(message.nlp, 'wit$datetime');
   const sentiment = firstTrait(message.nlp, 'wit$sentiment')
-  
+  console.log("message.text",message.text)
   if (greeting && greeting.confidence > 0.8) {
      response.text ="Please enter your birthdate.(Format:YYYY-MM-DD)";
-  } else if((BirthDate && BirthDate.confidence>0.7)||isGoodDate(message.text)) { 
+  } else if(isGoodDate(message.text)) { 
       response.text ="Do You want to know how many days left till your next birthday?", 
       response.quick_replies = [
         {
