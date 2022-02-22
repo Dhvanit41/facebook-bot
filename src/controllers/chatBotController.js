@@ -67,9 +67,12 @@ async function handleMessage(sender_psid, message) {
           payload: "quick_no",
         },
       ]);
-  } else if (message.text == "yes" || message.text == "no" ||(message.quick_replies &&
-    (message.quick_replies.payload=="quick_yes" || message.quick_replies.payload == "quick_no")
+  } else if (message.text == "yes" || message.text == "no" || (message.quick_reply &&
+    (message.quick_reply.payload=="quick_yes" || message.quick_reply.payload == "quick_no")
     )){
+      if(message.message == "yes" || message.quick_reply.payload=="quick_yes"){
+        response.text = `There are 70 days left untill your next birthday.l`
+      }
       response.text = "Good Bye!";
       await callSendAPI(sender_psid, response);
       response = {
