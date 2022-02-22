@@ -36,7 +36,7 @@ let getWebHook = (req, res) => {
   }
 };
 function firstTrait(nlp, name) {
-  console.log("nlp entities-----",JSON.stringify(nlp,null,2));
+//  console.log("nlp entities-----",JSON.stringify(nlp,null,2));
   return nlp && nlp.entities && nlp.traits[name] && nlp.traits[name][0];
 }
 
@@ -50,7 +50,18 @@ async function handleMessage(sender_psid,message) {
   if (greeting && greeting.confidence > 0.8) {
      response.text ="Please enter your birthdate.(Format:YYYY-MM-DD)";
   } else if(BirthDate && BirthDate.confidence>0.8) { 
-      response.text ="Please enter your birthdate.(Format:YYYY-MM-DD)"; 
+      response.text ="Do You want to know how many days left till your next birthday?", 
+      response.quick_replies = [
+        {
+          "content_type":"text",
+          "title":"Yes",
+          "payload":"quick_yes",
+        },{
+          "content_type":"text",
+          "title":"No",
+          "payload":"quick_no",
+        }
+      ]
   }
   await callSendAPI(sender_psid, response);
 }
