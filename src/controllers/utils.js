@@ -17,7 +17,7 @@ async function callSendAPI(sender_psid, response) {
     let res = await axios(req);
     return res;
   } catch (e) {
-    console.log("error",e)
+    //console.log("error",e)
   }
 }
 
