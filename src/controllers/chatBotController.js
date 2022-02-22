@@ -6,7 +6,7 @@ async function postWebHook(req,res) {
     body.entry.forEach(function (entry) {
       let webhook_event = entry.messaging[0];
       let sender_psid = webhook_event.sender.id;
-      if (webhook_event.message) {
+      if (webhook_event.message && !webhook_event.message.is_echo) {
          handleMessage(sender_psid, webhook_event.message);
       } else if (webhook_event.postback) {
          handlePostback(sender_psid, webhook_event.postback);
@@ -47,7 +47,8 @@ async function handleMessage(sender_psid,message) {
   console.log("message--------------",message)
   const greeting = firstTrait(message.nlp, 'wit$greetings');
   const BirthDate = firstTrait(message.nlp, 'wit$datetime');
-  const sentiment = firstTrait(message.nlp, 'wit$sentiment')
+  const sentiment = firstTrait(message.nlp, 'wit$sentiment');
+  console.log("sentiment",sentiment)
   if (greeting && greeting.confidence > 0.8) {
      response.text ="Please enter your birthdate.(Format:YYYY-MM-DD)";
   } else if(isGoodDate(message.text)) { 
