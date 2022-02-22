@@ -53,6 +53,7 @@ async function handlePostback(sender_psid, received_postback) {
     response = { "text": "Thanks!" }
   } else if (payload === 'no') 
     response = { "text": "Good Bye!" }
+
   await callSendAPI(sender_psid, response);
 }
 

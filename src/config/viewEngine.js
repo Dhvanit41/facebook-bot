@@ -1,9 +1,11 @@
-const express = require( 'express');
-
-let configViewEngine = (app) =>{
-    app.use(express.static('./src/public'));
-    app.set('view engine',"ejs");
-    app.set('views',"./src/views")
+const express = require("express");
+const path = require("path");
+let configViewEngine = (app) => {
+  console.log(path.join(__dirname,"..","public"));
+  app.use(express.static(path.join(__dirname,"..", "public")));
+  app.set("views", path.join(__dirname,"..", "views"));
+  app.engine("html", require("ejs").renderFile);
+  app.set("view engine", "html");
 };
 
 module.exports = configViewEngine;
