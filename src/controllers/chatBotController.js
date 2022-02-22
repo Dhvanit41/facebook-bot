@@ -67,7 +67,9 @@ async function handleMessage(sender_psid, message) {
           payload: "quick_no",
         },
       ]);
-  } else if (message.text == "yes" || message.text == "no" ){
+  } else if (message.text == "yes" || message.text == "no" ||(message.quick_replies &&
+    (message.quick_replies.payload=="quick_yes" || message.quick_replies.payload == "quick_no")
+    )){
       response.text = "Good Bye!";
       await callSendAPI(sender_psid, response);
       response = {
