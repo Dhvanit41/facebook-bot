@@ -17,3 +17,7 @@ async function callSendAPI(sender_psid, response) {
     throw new Error(e);
   }
 }
+
+module.exports={
+  callSendAPI,
+}
