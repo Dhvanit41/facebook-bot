@@ -6,7 +6,6 @@ async function postWebHook(req,res) {
     body.entry.forEach(function (entry) {
       let webhook_event = entry.messaging[0];
       let sender_psid = webhook_event.sender.id;
-      console.log("webhoooook",webhook_event)
       if (webhook_event.message) {
          handleMessage(sender_psid, webhook_event.message);
       } else if (webhook_event.postback) {
@@ -45,11 +44,10 @@ async function handleMessage(sender_psid,message) {
     "text" :"You can start again with just saying Hi."
   }
 
-  console.log("message--",message.text)
+  console.log("message--------------",message)
   const greeting = firstTrait(message.nlp, 'wit$greetings');
   const BirthDate = firstTrait(message.nlp, 'wit$datetime');
   const sentiment = firstTrait(message.nlp, 'wit$sentiment')
-  console.log("message.text",message.text)
   if (greeting && greeting.confidence > 0.8) {
      response.text ="Please enter your birthdate.(Format:YYYY-MM-DD)";
   } else if(isGoodDate(message.text)) { 
@@ -66,7 +64,16 @@ async function handleMessage(sender_psid,message) {
         }
       ]
   }else if(sentiment && sentiment.confidence>0.7){
-    response.text = "Good Bye!"
+    if(message.quick_replies && message.quick_replies.payload == "quick_yes"){
+      response.text = "good"
+
+    }else if (message.quick_replies && message.quick_replies.payload == "quick_no"){
+      response.text = "Good Bye!"
+      await callSendAPI(sender_psid, response);
+      response ={
+        "text" :"You can start again with just saying Hi."
+      }
+    }
   }
   await callSendAPI(sender_psid, response);
 }
