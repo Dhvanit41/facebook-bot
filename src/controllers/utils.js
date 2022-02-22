@@ -12,7 +12,7 @@ async function callSendAPI(sender_psid, response) {
       url: "https://graph.facebook.com/v6.0/me/messages",
       params: { access_token: process.env.FACEBOOK_PAGE_TOKEN },
       method: "POST",
-      json: request_body,
+      data: request_body,
     }
     console.log("req",req)
     let res = await axios(req);
