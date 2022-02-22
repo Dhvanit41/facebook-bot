@@ -1,5 +1,5 @@
 require("dotenv").config();
-const { callSendAPI, isGoodDate } = require("./utils");
+const { callSendAPI, isGoodDate, calculateDays } = require("./utils");
 async function postWebHook(req, res) {
   let body = req.body;
   if (body.object === "page") {
@@ -67,19 +67,22 @@ async function handleMessage(sender_psid, message) {
           payload: "quick_no",
         },
       ]);
-  } else if (message.text == "yes" || message.text == "no" || (message.quick_reply &&
-    (message.quick_reply.payload=="quick_yes" || message.quick_reply.payload == "quick_no")
-    )){
-      if(message.text == "yes" || message.quick_reply.payload=="quick_yes")
-      {
-        response.text = `There are 70 days left untill your next birthday.`
-        await callSendAPI(sender_psid, response);
-      }
-      response.text = "Good Bye!";
+  } else if (
+    message.text == "yes" ||
+    message.text == "no" ||
+    (message.quick_reply &&
+      (message.quick_reply.payload == "quick_yes" ||
+        message.quick_reply.payload == "quick_no"))
+  ) {
+    if (message.text == "yes" || message.quick_reply.payload == "quick_yes") {
+      response.text = `${calculateDays("1998-14-05")}`;
       await callSendAPI(sender_psid, response);
-      response = {
-        text: "You can start again with just saying Hi.",
-      }
+    }
+    response.text = "Good Bye!";
+    await callSendAPI(sender_psid, response);
+    response = {
+      text: "You can start again with just saying Hi.",
+    };
   }
   await callSendAPI(sender_psid, response);
 }

@@ -25,7 +25,32 @@ function isGoodDate(dt){
     return reGoodDate.test(dt);
 }
 
+
+function calculateDays(birthDate) {
+  let today = new Date();
+  let bday = new Date(birthDate); 
+  let age = today.getFullYear() - bday.getFullYear();
+  
+  let upcomingBday = new Date(today.getFullYear(), bday.getMonth(), bday.getDate());
+  
+  if(today > upcomingBday) {
+    upcomingBday.setFullYear(today.getFullYear() + 1);
+  }
+  
+  var one_day = 24 * 60 * 60 * 1000;
+  
+  let daysLeft = Math.ceil((upcomingBday.getTime() - today.getTime()) / (one_day));
+  
+  // No need to calculate people older than 199 yo. :)   
+  if (daysLeft && age < 200) {
+    return `In ${daysLeft} day(s), you will be ${age + 1}!`;  
+  } else {
+    return "Please enter a valid birtday.";
+  }
+}
+
 module.exports={
   callSendAPI,
-  isGoodDate
+  isGoodDate,
+  calculateDays
 }
