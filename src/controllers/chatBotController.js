@@ -46,10 +46,12 @@ async function handleMessage(sender_psid,message) {
   }
   console.log("message--",message)
   const greeting = firstTrait(message.nlp, 'wit$greetings');
-  const BirthDate = firstTrait(message.nlp, 'wit$Date/Time');
+  const BirthDate = firstTrait(message.nlp, 'wit$datetime');
+  const phone_number = firstTrait(message.nlp, 'wit$phone_number')
+  console.log({greeting,BirthDate})
   if (greeting && greeting.confidence > 0.8) {
      response.text ="Please enter your birthdate.(Format:YYYY-MM-DD)";
-  } else if(BirthDate && BirthDate.confidence>0.8) { 
+  } else if((BirthDate && BirthDate.confidence>0.7)|| phone_number && phone_number.confidence>0.7) { 
       response.text ="Do You want to know how many days left till your next birthday?", 
       response.quick_replies = [
         {
