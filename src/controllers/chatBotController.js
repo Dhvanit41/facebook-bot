@@ -1,6 +1,6 @@
 require("dotenv").config();
 const {callSendAPI} = require('./utils')
-let postWebHook = async(req, res) => {
+async function postWebHook(req,res) {
   let body = req.body;
   if (body.object === "page") {
     body.entry.forEach(function (entry) {
@@ -8,9 +8,9 @@ let postWebHook = async(req, res) => {
       let sender_psid = webhook_event.sender.id;
       console.log("webhoooook",webhook_event)
       if (webhook_event.message) {
-        await handleMessage(sender_psid, webhook_event.message);
+         handleMessage(sender_psid, webhook_event.message);
       } else if (webhook_event.postback) {
-        await handlePostback(sender_psid, webhook_event.postback);
+         handlePostback(sender_psid, webhook_event.postback);
       }
     });
     res.status(200).send("EVENT_RECEIVED");
