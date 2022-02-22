@@ -1,5 +1,5 @@
 require("dotenv").config();
-const {callSendAPI} = require('./utils')
+const {callSendAPI,isGoodDate} = require('./utils')
 async function postWebHook(req,res) {
   let body = req.body;
   if (body.object === "page") {
@@ -44,14 +44,15 @@ async function handleMessage(sender_psid,message) {
   let response ={
     "text" :"You can start again with just saying Hi."
   }
-  console.log("message--",message)
+
+  console.log("message--",message.text)
   const greeting = firstTrait(message.nlp, 'wit$greetings');
   const BirthDate = firstTrait(message.nlp, 'wit$datetime');
-  const phone_number = firstTrait(message.nlp, 'wit$sentiment')
-  console.log({greeting,BirthDate,phone_number})
+  const sentiment = firstTrait(message.nlp, 'wit$sentiment')
+  
   if (greeting && greeting.confidence > 0.8) {
      response.text ="Please enter your birthdate.(Format:YYYY-MM-DD)";
-  } else if((BirthDate && BirthDate.confidence>0.7)|| (phone_number && phone_number.confidence>0.7)) { 
+  } else if((BirthDate && BirthDate.confidence>0.7)||isGoodDate(message.text)) { 
       response.text ="Do You want to know how many days left till your next birthday?", 
       response.quick_replies = [
         {
@@ -64,6 +65,8 @@ async function handleMessage(sender_psid,message) {
           "payload":"quick_no",
         }
       ]
+  }else if(BirthDate.confidence>0.7){
+    response.text = "Good Bye!"
   }
   await callSendAPI(sender_psid, response);
 }
@@ -87,6 +90,9 @@ async function handlePostback(sender_psid, received_postback) {
 
   await callSendAPI(sender_psid, response);
 }
+
+
+
 
 module.exports = {
   postWebHook,
