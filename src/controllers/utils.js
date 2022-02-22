@@ -42,7 +42,7 @@ function calculateDays(birthDate) {
   let daysLeft = Math.ceil((upcomingBday.getTime() - today.getTime()) / (one_day));
   
   // No need to calculate people older than 199 yo. :)   
-  if (daysLeft && age < 200) {
+  if (daysLeft && age < 200 && age>=0) {
     return `In ${daysLeft} day(s), you will be ${age + 1}!`;  
   } else {
     return "Please enter a valid birtday.";
