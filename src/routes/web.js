@@ -10,7 +10,7 @@ const database = process.env.PLSQL_DATABASE;
 const password = process.env.PLSQL_PASSWORD;
 const port = process.env.PLSQL_PORT;
 
-const connection = new Sequelize(process.env.DB_URL,{ssl:{
+const connection = new Sequelize(process.env.DB_URL ,{ssl:{
   rejectUnauthorized: false,
   required:true
 }})
