@@ -17,14 +17,12 @@ async function callSendAPI(sender_psid, response) {
     let res = await axios(req);
     return res;
   } catch (e) {
-    //console.log("error",e)
   }
 }
 function isGoodDate(dt){
   let reGoodDate = /^((19|20)?[0-9]{2})[- /.](0?[1-9]|1[012])[- /.](0?[1-9]|[12][0-9]|3[01])*$/;
     return reGoodDate.test(dt);
 }
-
 
 function calculateDays(birthDate) {
   let today = new Date();
@@ -49,8 +47,97 @@ function calculateDays(birthDate) {
   }
 }
 
+function isInPositiveWords(text='') {
+  let positiveWords = [
+    "yes",
+    "yo",
+    "yeah",
+    "yep",
+    "sure",
+    "affirmative",
+    "amen",
+    "fine",
+    "good",
+    "okay",
+    "true",
+    "yea",
+    "all right",
+    "aye",
+    "beyond a doubt",
+    "by all means",
+    "certainly",
+    "definitely",
+    "even so",
+    "exactly",
+    "gladly",
+    "good enough",
+    "granted",
+    "indubitably",
+    "just so",
+    "most assuredly",
+    "naturally",
+    "of course",
+    "positively",
+    "precisely",
+    "sure thing",
+    "surely",
+    "undoubtedly",
+    "unquestionably",
+    "very well",
+    "willingly",
+    "without fail",
+    "yep",
+  ];
+  return positiveWords.includes(text.toLowerCase());
+}
+
+function isInNegeativeWords(text='') {
+  let negeativeWords = ["nay", "nix", "never", "not","no","not","nah"];
+  return negeativeWords.includes(text.toLowerCase());
+}
+
+function askForNextBirthDayResponse(response) {
+  response.text =
+    "Do You want to know how many days left till your next birthday?";
+  response.quick_replies = [
+    {
+      content_type: "text",
+      title: "Yes",
+      payload: "quick_yes",
+    },
+    {
+      content_type: "text",
+      title: "No",
+      payload: "quick_no",
+    },
+  ];
+}
+
+function askToAddBirthDayResponse(response) {
+  response.text = "Please enter your birthdate.(Format:YYYY-MM-DD)";
+  return response;
+}
+
+function defaultGreetingResponse(response) {
+  response.text = "You can start again with just saying Hi.";
+}
+function goodByeResponse(response) {
+  response.text = "Good Bye!";
+  return response;
+}
+function firstTrait(nlp, name) {
+  return nlp && nlp.entities && nlp.traits[name] && nlp.traits[name][0];
+}
+
 module.exports={
   callSendAPI,
   isGoodDate,
-  calculateDays
+  calculateDays,
+  isInPositiveWords,
+  isInNegeativeWords,
+  askForNextBirthDayResponse,
+  askToAddBirthDayResponse,
+  defaultGreetingResponse,
+  goodByeResponse,
+  firstTrait
 }

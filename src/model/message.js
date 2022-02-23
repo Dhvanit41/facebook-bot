@@ -1,4 +1,3 @@
-// Include Sequelize module.
 const Sequelize = require("sequelize");
 const sequelize = require("../config/database");
 
@@ -12,9 +11,6 @@ const Messages = sequelize.define(
       autoIncrement: true,
     },
     user_id: {
-      type: Sequelize.STRING,
-    },
-    user_name: {
       type: Sequelize.STRING,
     },
     message_id: {

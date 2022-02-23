@@ -1,6 +1,20 @@
 require("dotenv").config();
-const { callSendAPI, isGoodDate, calculateDays } = require("./utils");
-const { postMessage ,getUsersBirthDate} = require("../controllers/messageController");
+const {
+  callSendAPI,
+  isGoodDate,
+  calculateDays,
+  isInPositiveWords,
+  isInNegeativeWords,
+  askForNextBirthDayResponse,
+  askToAddBirthDayResponse,
+  defaultGreetingResponse,
+  goodByeResponse,
+  firstTrait,
+} = require("./utils");
+const {
+  postMessage,
+  getUsersBirthDate,
+} = require("../controllers/messageController");
 async function postWebHook(req, res) {
   let body = req.body;
   if (body.object === "page") {
@@ -35,55 +49,47 @@ let getWebHook = (req, res) => {
     }
   }
 };
-function firstTrait(nlp, name) {
-  console.log(nlp.traits[name]);
-  return nlp && nlp.entities && nlp.traits[name] && nlp.traits[name][0];
-}
+
 async function handleMessage(sender_psid, message) {
-  let birthDate = "";
-  let is_birthdate = false;
-  let response = {
-    text: "You can start again with just saying Hi.",
-  };
+  let birthDate = "",
+    is_birthdate = false;
+
+  let response = defaultGreetingResponse({});
   const greeting = firstTrait(message.nlp, "wit$greetings");
   if (greeting && greeting.confidence > 0.8) {
-    response.text = "Please enter your birthdate.(Format:YYYY-MM-DD)";
+    response = askToAddBirthDayResponse(response);
   } else if (isGoodDate(message.text)) {
     is_birthdate = true;
     birthDate = message.text;
-    (response.text =
-      "Do You want to know how many days left till your next birthday?"),
-      (response.quick_replies = [
-        {
-          content_type: "text",
-          title: "Yes",
-          payload: "quick_yes",
-        },
-        {
-          content_type: "text",
-          title: "No",
-          payload: "quick_no",
-        },
-      ]);
+    response = askForNextBirthDayResponse(response);
   } else if (
-    message.text == "yes" ||
-    message.text == "no" ||
+    isInPositiveWords(message.text) ||
+    isInNegeativeWords(message.text) ||
     (message.quick_reply &&
       (message.quick_reply.payload == "quick_yes" ||
         message.quick_reply.payload == "quick_no"))
   ) {
-    if (message.text == "yes" || message.quick_reply.payload == "quick_yes") {
-      let databaseBirthdate = await getUsersBirthDate(sender_psid)
+    if (
+      isInPositiveWords(message.text) ||
+      message.quick_reply.payload == "quick_yes"
+    ) {
+      let databaseBirthdate = await getUsersBirthDate(sender_psid);
       response.text = `${calculateDays(databaseBirthdate)}`;
       await callSendAPI(sender_psid, response);
     }
-    response.text = "Good Bye!";
+    response = goodByeResponse(response);
     await callSendAPI(sender_psid, response);
-    response = {
-      text: "You can start again with just saying Hi.",
-    };
+
+    response = defaultGreetingResponse(response);
   }
-  await postMessage(sender_psid, "", message.mid, message.text,is_birthdate,birthDate);
+  await postMessage(
+    sender_psid,
+    "",
+    message.mid,
+    message.text,
+    is_birthdate,
+    birthDate
+  );
   await callSendAPI(sender_psid, response);
 }
 
