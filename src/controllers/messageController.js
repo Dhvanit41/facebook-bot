@@ -46,8 +46,8 @@ async function getSummary(req, res) {
 }
 async function getMesssage(req, res) {
   try {
-    console.log(req.query.params)
-    const message = await Messages.findOne({ where: { id: req.query.params} });
+    const { id } = req.params;
+    const message = await Messages.findOne({ where: { message_id:id} });
     res.send({
       status: true,
       message,
