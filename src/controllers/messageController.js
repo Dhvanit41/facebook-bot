@@ -33,9 +33,6 @@ async function getMesssage(req, res) {
         }]
       }
     }
-    for(const message of messages){
-      message
-    }
       res.send({
       status: true,
       users:users,
