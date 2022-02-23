@@ -41,7 +41,7 @@ function firstTrait(nlp, name) {
 }
 async function handleMessage(sender_psid, message) {
   console.log("sender_psid, message",sender_psid, message)
-  //await postMessage(sender_psid, "", message_id, message.text);
+  await postMessage(sender_psid, "", message.mid, message.text);
   let response = {
     text: "You can start again with just saying Hi.",
   };

@@ -17,9 +17,28 @@ async function getMessagesByUserId(req, res) {
 async function getMesssage(req, res) {
   try {
     const messages = await Messages.findAll({});
-    res.send({
+    let users = {};
+    for(const message of messages){
+      if(users[user_id] &&users[user_id].length){
+        users[user_id].push({
+          "user":message["user_id"],
+          "message":message["message_name"],
+          "messagId":message["message_id"],
+        })
+      }else{
+        users[user_id] = [{
+          "user":message["user_id"],
+          "message":message["message_name"],
+          "messagId":message["message_id"],
+        }]
+      }
+    }
+    for(const message of messages){
+      message
+    }
+      res.send({
       status: true,
-      messages,
+      users:users,
     });
   } catch {
     res.status(500).json({
@@ -30,10 +49,12 @@ async function getMesssage(req, res) {
 }
 async function getSummary(req, res) {
   try {
-    const messages = await Messages.findAll({});
+    let ans =[];
+    const message = await Messages.findOne({ where: { id: req.params.message_id} });
+
     res.send({
       status: true,
-      messages,
+      ans,
     });
   } catch {
     res.status(500).json({
