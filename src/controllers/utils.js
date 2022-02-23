@@ -96,48 +96,10 @@ function isInNegeativeWords(text='') {
   return negeativeWords.includes(text.toLowerCase());
 }
 
-function askForNextBirthDayResponse(response={}) {
-  response.text =
-    "Do You want to know how many days left till your next birthday?";
-  response.quick_replies = [
-    {
-      content_type: "text",
-      title: "Yes",
-      payload: "quick_yes",
-    },
-    {
-      content_type: "text",
-      title: "No",
-      payload: "quick_no",
-    },
-  ];
-}
-
-function askToAddBirthDayResponse(response={}) {
-  response.text = "Please enter your birthdate.(Format:YYYY-MM-DD)";
-  return response;
-}
-
-function defaultGreetingResponse(response ={}) {
-  response.text = "You can start again with just saying Hi.";
-}
-function goodByeResponse(response={}) {
-  response.text = "Good Bye!";
-  return response;
-}
-function firstTrait(nlp, name) {
-  return nlp && nlp.entities && nlp.traits[name] && nlp.traits[name][0];
-}
-
 module.exports={
   callSendAPI,
   isGoodDate,
   calculateDays,
   isInPositiveWords,
-  isInNegeativeWords,
-  askForNextBirthDayResponse,
-  askToAddBirthDayResponse,
-  defaultGreetingResponse,
-  goodByeResponse,
-  firstTrait
+  isInNegeativeWords
 }
