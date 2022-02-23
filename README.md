@@ -1,7 +1,14 @@
 1. How i worked project.
 - Took heroku free domain and created project
 - Added Facebook webhook support from meta for developers
-- Created apis for `/messages`,`messages/:id`,'`meesages/summary`.
+- Addded postgres sequelize to create api
+- Working URL- https://facebook-bot-dhvanit.herokuapp.com/  (You need to login to messenger)
+- Created apis for `messages`,`messages/:id`,`messages/summary`
+-https://facebook-bot-dhvanit.herokuapp.com/messages
+https://facebook-bot-dhvanit.herokuapp.com/messages/m_qQMYNS3RpsELYlkEFSG1G5cCW21k_dZRYixk0HZB6WA8kOe0adgGwzmTN7XBgjvz1zQlXmnsEPN6uTVRJZPXTQ,
+https://facebook-bot-dhvanit.herokuapp.com/summary
+
+.
 2. What still we can add.
 - We can add dialogflow for NLP support 
 - We can also integrate RASA For NLP.
