@@ -1,10 +1,17 @@
 require("dotenv").config();
-const { callSendAPI, isGoodDate, calculateDays,isInPositiveWords,
-  isInNegeativeWords } = require("./utils");
+const {
+  callSendAPI,
+  isGoodDate,
+  calculateDays,
+  isInPositiveWords,
+  isInNegeativeWords,
+  firstTrait,
+} = require("./utils");
 const {
   postMessage,
   getUsersBirthDate,
 } = require("../controllers/messageController");
+
 async function postWebHook(req, res) {
   let body = req.body;
   if (body.object === "page") {
@@ -23,7 +30,7 @@ async function postWebHook(req, res) {
   }
 }
 
-let getWebHook = (req, res) => {
+function getWebHook(req, res) {
   let mode = req.query["hub.mode"];
   let token = req.query["hub.verify_token"];
   let challenge = req.query["hub.challenge"];
@@ -38,10 +45,6 @@ let getWebHook = (req, res) => {
       res.sendStatus(403);
     }
   }
-};
-
-function firstTrait(nlp, name) {
-  return nlp && nlp.entities && nlp.traits[name] && nlp.traits[name][0];
 }
 
 async function handleMessage(sender_psid, message) {
@@ -77,7 +80,10 @@ async function handleMessage(sender_psid, message) {
       (message.quick_reply.payload == "quick_yes" ||
         message.quick_reply.payload == "quick_no"))
   ) {
-    if (isInPositiveWords(message.text)|| message.quick_reply.payload == "quick_yes") {
+    if (
+      isInPositiveWords(message.text) ||
+      message.quick_reply.payload == "quick_yes"
+    ) {
       let databaseBirthdate = await getUsersBirthDate(sender_psid);
       response.text = `${calculateDays(databaseBirthdate)}`;
       await callSendAPI(sender_psid, response);

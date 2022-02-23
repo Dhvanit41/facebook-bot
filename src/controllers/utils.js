@@ -9,7 +9,7 @@ async function callSendAPI(sender_psid, response) {
       message: response,
     };
     let req = {
-      url: "https://graph.facebook.com/v6.0/me/messages",
+      url: process.env.FB_GRAPHQL_URL,
       params: { access_token: process.env.FACEBOOK_PAGE_TOKEN },
       method: "POST",
       data: request_body,
@@ -95,11 +95,14 @@ function isInNegeativeWords(text='') {
   let negeativeWords = ["nay", "nix", "never", "not","no","not","nah"];
   return negeativeWords.includes(text.toLowerCase());
 }
-
+function firstTrait(nlp, name) {
+  return nlp && nlp.entities && nlp.traits[name] && nlp.traits[name][0];
+}
 module.exports={
   callSendAPI,
   isGoodDate,
   calculateDays,
   isInPositiveWords,
-  isInNegeativeWords
+  isInNegeativeWords,
+  firstTrait
 }
