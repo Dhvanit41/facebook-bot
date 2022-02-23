@@ -14,7 +14,7 @@ async function getMessagesByUserId(req, res) {
     });
   }
 }
-async function getMesssage(req, res) {
+async function getSummary(req, res) {
   try {
     const messages = await Messages.findAll({});
     let users = {};
@@ -44,14 +44,13 @@ async function getMesssage(req, res) {
     });
   }
 }
-async function getSummary(req, res) {
+async function getMesssage(req, res) {
   try {
-    let ans =[];
-    const message = await Messages.findOne({ where: { id: req.params.message_id} });
-
+    console.log(req.query.params)
+    const message = await Messages.findOne({ where: { id: req.query.params} });
     res.send({
       status: true,
-      ans,
+      message,
     });
   } catch {
     res.status(500).json({
