@@ -51,7 +51,7 @@ const Messages = connection.define(
    }
   },
   {
-    modelName: "User",
+    modelName: "Messages",
   }
 );
 
