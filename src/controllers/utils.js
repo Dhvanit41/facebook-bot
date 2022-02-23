@@ -96,7 +96,7 @@ function isInNegeativeWords(text='') {
   return negeativeWords.includes(text.toLowerCase());
 }
 
-function askForNextBirthDayResponse(response) {
+function askForNextBirthDayResponse(response={}) {
   response.text =
     "Do You want to know how many days left till your next birthday?";
   response.quick_replies = [
@@ -113,15 +113,15 @@ function askForNextBirthDayResponse(response) {
   ];
 }
 
-function askToAddBirthDayResponse(response) {
+function askToAddBirthDayResponse(response={}) {
   response.text = "Please enter your birthdate.(Format:YYYY-MM-DD)";
   return response;
 }
 
-function defaultGreetingResponse(response) {
+function defaultGreetingResponse(response ={}) {
   response.text = "You can start again with just saying Hi.";
 }
-function goodByeResponse(response) {
+function goodByeResponse(response={}) {
   response.text = "Good Bye!";
   return response;
 }

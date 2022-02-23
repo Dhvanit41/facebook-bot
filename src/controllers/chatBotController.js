@@ -54,7 +54,7 @@ async function handleMessage(sender_psid, message) {
   let birthDate = "",
     is_birthdate = false;
 
-  let response = defaultGreetingResponse({});
+  let response = defaultGreetingResponse();
   const greeting = firstTrait(message.nlp, "wit$greetings");
   if (greeting && greeting.confidence > 0.8) {
     response = askToAddBirthDayResponse(response);
