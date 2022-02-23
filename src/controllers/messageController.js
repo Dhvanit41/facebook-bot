@@ -6,7 +6,7 @@ async function getMessagesByUserId(req, res) {
     res.send({
       status: true,
       messages,
-    })
+    });
   } catch {
     res.status(500).json({
       status: true,
@@ -20,7 +20,7 @@ async function getMesssage(req, res) {
     res.send({
       status: true,
       messages,
-    })
+    });
   } catch {
     res.status(500).json({
       status: true,
@@ -34,7 +34,7 @@ async function getSummary(req, res) {
     res.send({
       status: true,
       messages,
-    })
+    });
   } catch {
     res.status(500).json({
       status: true,
@@ -42,8 +42,17 @@ async function getSummary(req, res) {
     });
   }
 }
+async function postMessage(user_id, user_name="", message_id, message_name="") {
+  await Messages.create({
+    user_id,
+    user_name,
+    message_id,
+    message_name,
+  });
+}
 module.exports = {
   getSummary,
   getMesssage,
   getMessagesByUserId,
+  postMessage,
 };

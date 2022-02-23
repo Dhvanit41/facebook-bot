@@ -1,19 +1,16 @@
 require("dotenv").config();
 const { callSendAPI, isGoodDate, calculateDays } = require("./utils");
+const { postMessage } = require("../controllers/messageController");
 async function postWebHook(req, res) {
   let body = req.body;
   if (body.object === "page") {
     for (const entry of body.entry) {
-       let webhook_event = entry.messaging[0];
+      let webhook_event = entry.messaging[0];
       let sender_psid = webhook_event.sender.id;
-      console.log("webhook_event",JSON.stringify(webhook_event,null,2));
-
-      if (webhook_event.message && webhook_event.message.is_echo) {
-      }
       if (webhook_event.message && !webhook_event.message.is_echo) {
-        handleMessage(sender_psid, webhook_event.message);
+        await handleMessage(sender_psid, webhook_event.message);
       } else if (webhook_event.postback) {
-        handlePostback(sender_psid, webhook_event.postback);
+        await handlePostback(sender_psid, webhook_event.postback);
       }
     }
     res.status(200).send("EVENT_RECEIVED");
@@ -42,8 +39,8 @@ function firstTrait(nlp, name) {
   console.log(nlp.traits[name]);
   return nlp && nlp.entities && nlp.traits[name] && nlp.traits[name][0];
 }
-
 async function handleMessage(sender_psid, message) {
+  await postMessage(sender_psid, "", message_id, message.text);
   let response = {
     text: "You can start again with just saying Hi.",
   };
