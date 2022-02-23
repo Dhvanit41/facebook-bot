@@ -23,6 +23,12 @@ const Messages = sequelize.define(
     message_name: {
       type: Sequelize.STRING,
     },
+    is_birthdate:{
+      type: Sequelize.BOOLEAN,
+    },
+    birthdate:{
+      type: Sequelize.BOOLEAN,
+    }
   },
   {
     modelName: "Messages",

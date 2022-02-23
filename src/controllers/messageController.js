@@ -20,7 +20,6 @@ async function getSummary(req, res) {
     let users = {};
     let summary = [];
     for(let message of messages){
-      console.log("message",message)
       if(users["user_id"] &&users["user_id"].length){
         users["user_id"].push({
           "user":message["user_id"],
@@ -38,13 +37,11 @@ async function getSummary(req, res) {
     Object.keys(users).forEach(userId=>{
       summary.push(users[userId])
     })
-    console.log(users)
       res.send({
       status: true,
       summary,
     });
   } catch(e) {
-    console.log(e)
     res.status(500).json({
       status: true,
       message: "Something went wrong",
@@ -66,17 +63,25 @@ async function getMesssage(req, res) {
     });
   }
 }
-async function postMessage(user_id, user_name="", message_id, message_name="") {
+async function postMessage(user_id, user_name="", message_id, message_name="",is_birthdate=false,birthdate="") {
   await Messages.create({
     user_id,
     user_name,
     message_id,
     message_name,
+    is_birthdate,
+    birthdate
   });
 }
+async function getUsersBirthDate(user_id){
+  const message = await Messages.findOne({ where: { user_id,is_birthdate:true} });
+  return message.birthdate;
+}
+
 module.exports = {
   getSummary,
   getMesssage,
   getMessagesByUserId,
   postMessage,
+  getUsersBirthDate
 };

@@ -1,6 +1,6 @@
 require("dotenv").config();
 const { callSendAPI, isGoodDate, calculateDays } = require("./utils");
-const { postMessage } = require("../controllers/messageController");
+const { postMessage ,getUsersBirthDate} = require("../controllers/messageController");
 async function postWebHook(req, res) {
   let body = req.body;
   if (body.object === "page") {
@@ -40,16 +40,17 @@ function firstTrait(nlp, name) {
   return nlp && nlp.entities && nlp.traits[name] && nlp.traits[name][0];
 }
 async function handleMessage(sender_psid, message) {
-  console.log("sender_psid, message",sender_psid, message)
-  await postMessage(sender_psid, "", message.mid, message.text);
   let response = {
     text: "You can start again with just saying Hi.",
   };
   const greeting = firstTrait(message.nlp, "wit$greetings");
   const sentiment = firstTrait(message.nlp, "wit$sentiment");
   if (greeting && greeting.confidence > 0.8) {
+    await postMessage(sender_psid, "", message.mid, message.text);
     response.text = "Please enter your birthdate.(Format:YYYY-MM-DD)";
   } else if (isGoodDate(message.text)) {
+    await postMessage(sender_psid, "", message.mid, message.text,true,message.text);
+
     (response.text =
       "Do You want to know how many days left till your next birthday?"),
       (response.quick_replies = [
@@ -65,14 +66,17 @@ async function handleMessage(sender_psid, message) {
         },
       ]);
   } else if (
-    message.text == "yes" ||
-    message.text == "no" ||
+    message.text.toLowerCase() == "yes" ||
+    message.text.toLowerCase() == "no" ||
     (message.quick_reply &&
       (message.quick_reply.payload == "quick_yes" ||
         message.quick_reply.payload == "quick_no"))
   ) {
+    await postMessage(sender_psid, "", message.mid, message.text);
     if (message.text == "yes" || message.quick_reply.payload == "quick_yes") {
-      response.text = `${calculateDays("1998-05-14")}`;
+      let birthDate = await getUsersBirthDate(sender_psid);
+      console.log("birthdate----",birthDate)
+      response.text = `${calculateDays(birthDate)}`;
       await callSendAPI(sender_psid, response);
     }
     response.text = "Good Bye!";
