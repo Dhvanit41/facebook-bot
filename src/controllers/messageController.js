@@ -77,9 +77,7 @@ async function getUsersBirthDate(user_id){
   let message = messages[messages.length-1]
   return message.birthdate;
 }
-function firstTrait(nlp, name) {
-  return nlp && nlp.entities && nlp.traits[name] && nlp.traits[name][0];
-}
+
 module.exports = {
   getSummary,
   getMesssage,
