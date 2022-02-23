@@ -35,7 +35,6 @@ let getWebHook = (req, res) => {
   }
 };
 function firstTrait(nlp, name) {
-  //  console.log("nlp entities-----",JSON.stringify(nlp,null,2));
   console.log(nlp.traits[name]);
   return nlp && nlp.entities && nlp.traits[name] && nlp.traits[name][0];
 }
@@ -44,12 +43,8 @@ async function handleMessage(sender_psid, message) {
   let response = {
     text: "You can start again with just saying Hi.",
   };
-
-  console.log("message--------------", message);
   const greeting = firstTrait(message.nlp, "wit$greetings");
-  const BirthDate = firstTrait(message.nlp, "wit$datetime");
   const sentiment = firstTrait(message.nlp, "wit$sentiment");
-  console.log("sentiment", sentiment, message.sentiment);
   if (greeting && greeting.confidence > 0.8) {
     response.text = "Please enter your birthdate.(Format:YYYY-MM-DD)";
   } else if (isGoodDate(message.text)) {
@@ -59,7 +54,7 @@ async function handleMessage(sender_psid, message) {
         {
           content_type: "text",
           title: "Yes",
-          payload: "quick_yes",
+          payload: "quick_yes_message.text",
         },
         {
           content_type: "text",
@@ -85,15 +80,6 @@ async function handleMessage(sender_psid, message) {
     };
   }
   await callSendAPI(sender_psid, response);
-}
-async function _handleMessage(sender_psid, received_message) {
-  let response;
-  if (received_message.text) {
-    response = {
-      text: `Hi There! What is your name?`,
-    };
-    await callSendAPI(sender_psid, response);
-  }
 }
 
 async function handlePostback(sender_psid, received_postback) {
