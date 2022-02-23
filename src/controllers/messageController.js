@@ -2,7 +2,7 @@ require("dotenv").config();
 const Messages = require("../model/message");
 async function getMessagesByUserId(req, res) {
   try {
-    const messages = await Messages.findAll({});
+    const messages = await Messages.findAll({attributes: ['user_id', 'message_id',"message_name"]});
     res.send({
       status: true,
       messages,
