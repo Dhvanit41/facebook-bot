@@ -3,9 +3,13 @@ const { callSendAPI, isGoodDate, calculateDays } = require("./utils");
 async function postWebHook(req, res) {
   let body = req.body;
   if (body.object === "page") {
+    console.log("body",body);
     body.entry.forEach(function (entry) {
       let webhook_event = entry.messaging[0];
       let sender_psid = webhook_event.sender.id;
+      if(webhook_event.message.is_echo){
+        console.log("====",webhook_event.message)
+      }
       if (webhook_event.message && !webhook_event.message.is_echo) {
         handleMessage(sender_psid, webhook_event.message);
       } else if (webhook_event.postback) {
