@@ -1,6 +1,6 @@
 require("dotenv").config();
 const { callSendAPI, isGoodDate, calculateDays } = require("./utils");
-const { postMessage } = require("../controllers/messageController");
+const { postMessage ,getUsersBirthDate} = require("../controllers/messageController");
 async function postWebHook(req, res) {
   let body = req.body;
   if (body.object === "page") {
@@ -49,8 +49,8 @@ async function handleMessage(sender_psid, message) {
   if (greeting && greeting.confidence > 0.8) {
     response.text = "Please enter your birthdate.(Format:YYYY-MM-DD)";
   } else if (isGoodDate(message.text)) {
-    is_birthdate = true,
-    birthDate = message.text
+    is_birthdate = true;
+    birthDate = message.text;
     (response.text =
       "Do You want to know how many days left till your next birthday?"),
       (response.quick_replies = [
@@ -73,6 +73,9 @@ async function handleMessage(sender_psid, message) {
         message.quick_reply.payload == "quick_no"))
   ) {
     if (message.text == "yes" || message.quick_reply.payload == "quick_yes") {
+      console.log("before")
+      let birthdate = await getUsersBirthDate(sender_psid)
+      console.log("after",birthDate)
       response.text = `${calculateDays("1998-05-14")}`;
       await callSendAPI(sender_psid, response);
     }
