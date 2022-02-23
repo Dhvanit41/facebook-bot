@@ -75,7 +75,8 @@ async function postMessage(user_id, user_name="", message_id, message_name="",is
   });
 }
 async function getUsersBirthDate(user_id){
-  const message = await Messages.findOne({ where: { user_id,is_birthdate:true} });
+  let messages = await Messages.findAll({ where: { user_id,is_birthdate:true} });
+  let message = messages[messages.length-1]
   return message.birthdate;
 }
 

@@ -74,9 +74,9 @@ async function handleMessage(sender_psid, message) {
   ) {
     if (message.text == "yes" || message.quick_reply.payload == "quick_yes") {
       console.log("before")
-      let birthdate = await getUsersBirthDate(sender_psid)
-      console.log("after",birthDate)
-      response.text = `${calculateDays("1998-05-14")}`;
+      let databaseBirthdate = await getUsersBirthDate(sender_psid)
+      console.log("after",databaseBirthdate)
+      response.text = `${calculateDays("databaseBirthdate")}`;
       await callSendAPI(sender_psid, response);
     }
     response.text = "Good Bye!";
