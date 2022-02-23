@@ -40,7 +40,8 @@ function firstTrait(nlp, name) {
   return nlp && nlp.entities && nlp.traits[name] && nlp.traits[name][0];
 }
 async function handleMessage(sender_psid, message) {
-  await postMessage(sender_psid, "", message_id, message.text);
+  console.log("sender_psid, message",sender_psid, message)
+  //await postMessage(sender_psid, "", message_id, message.text);
   let response = {
     text: "You can start again with just saying Hi.",
   };
