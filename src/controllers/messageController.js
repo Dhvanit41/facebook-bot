@@ -18,6 +18,7 @@ async function getSummary(req, res) {
   try {
     const messages = await Messages.findAll({});
     let users = {};
+    let summary = [];
     for(let message of messages){
       console.log("message",message)
       if(users["user_id"] &&users["user_id"].length){
@@ -34,10 +35,13 @@ async function getSummary(req, res) {
         }]
       }
     }
+    Object.keys(users).forEach(userId=>{
+      summary.push(users[userId])
+    })
     console.log(users)
       res.send({
       status: true,
-      users:users,
+      summary,
     });
   } catch(e) {
     console.log(e)
