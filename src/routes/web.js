@@ -4,11 +4,11 @@ const router = express.Router()
 const homepageController = require('../controllers/homepageController');
 const {Sequelize,Model, DataTypes} = require("sequelize");
 
-const user = process.env.PLSQL_USER,
-const host = process.env.PLSQL_HOST
-const database = process.env.PLSQL_DATABASE
-const password = process.env.PLSQL_PASSWORD
-const port = process.env.PLSQL_PORT
+const user = process.env.PLSQL_USER;
+const host = process.env.PLSQL_HOST;
+const database = process.env.PLSQL_DATABASE;
+const password = process.env.PLSQL_PASSWORD;
+const port = process.env.PLSQL_PORT;
 
 const connection = new Sequelize(database, user, password, {
   host,
