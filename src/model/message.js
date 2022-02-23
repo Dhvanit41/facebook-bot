@@ -27,7 +27,7 @@ const Messages = sequelize.define(
       type: Sequelize.BOOLEAN,
     },
     birthdate:{
-      type: Sequelize.BOOLEAN,
+      type: Sequelize.STRING,
     }
   },
   {
