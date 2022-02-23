@@ -82,6 +82,7 @@ async function handleMessage(sender_psid, message) {
       text: "You can start again with just saying Hi.",
     };
   }
+  console.log("84")
   await postMessage(sender_psid, "", message.mid, message.text,is_birthdate,birthDate);
   await callSendAPI(sender_psid, response);
 }

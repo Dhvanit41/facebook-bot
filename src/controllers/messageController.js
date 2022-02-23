@@ -64,6 +64,7 @@ async function getMesssage(req, res) {
   }
 }
 async function postMessage(user_id, user_name="", message_id, message_name="",is_birthdate=false,birthdate="") {
+  console.log("called post message")
   await Messages.create({
     user_id,
     user_name,
