@@ -20,14 +20,14 @@ async function getSummary(req, res) {
     let users = {};
     for(let message of messages){
       console.log("message",message)
-      if(users[user_id] &&users[user_id].length){
-        users[user_id].push({
+      if(users["user_id"] &&users["user_id"].length){
+        users["user_id"].push({
           "user":message["user_id"],
           "message":message["message_name"],
           "messagId":message["message_id"],
         })
       }else{
-        users[user_id] = [{
+        users["user_id"] = [{
           "user":message["user_id"],
           "message":message["message_name"],
           "messagId":message["message_id"],
