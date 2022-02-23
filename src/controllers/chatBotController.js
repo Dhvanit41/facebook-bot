@@ -90,7 +90,6 @@ async function handleMessage(sender_psid, message) {
   }
   await postMessage(
     sender_psid,
-    "",
     message.mid,
     message.text,
     is_birthdate,
