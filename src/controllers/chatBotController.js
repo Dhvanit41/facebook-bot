@@ -4,7 +4,7 @@ async function postWebHook(req, res) {
   let body = req.body;
   if (body.object === "page") {
     body.entry.forEach(function (entry) {
-      console.log("entry---",entry,sender)
+      console.log("entry---",entry.sender)
       console.log("entry",entry.message)
       let webhook_event = entry.messaging[0];
       let sender_psid = webhook_event.sender.id;
