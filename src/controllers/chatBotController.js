@@ -57,7 +57,7 @@ async function handleMessage(sender_psid, message) {
         {
           content_type: "text",
           title: "Yes",
-          payload: "quick_yes_message.text",
+          payload: "quick_yes",
         },
         {
           content_type: "text",
@@ -73,10 +73,8 @@ async function handleMessage(sender_psid, message) {
         message.quick_reply.payload == "quick_no"))
   ) {
     if (message.text == "yes" || message.quick_reply.payload == "quick_yes") {
-      console.log("before")
       let databaseBirthdate = await getUsersBirthDate(sender_psid)
-      console.log("after",databaseBirthdate)
-      response.text = `${calculateDays("databaseBirthdate")}`;
+      response.text = `${calculateDays(databaseBirthdate)}`;
       await callSendAPI(sender_psid, response);
     }
     response.text = "Good Bye!";
@@ -85,7 +83,6 @@ async function handleMessage(sender_psid, message) {
       text: "You can start again with just saying Hi.",
     };
   }
-  console.log("84")
   await postMessage(sender_psid, "", message.mid, message.text,is_birthdate,birthDate);
   await callSendAPI(sender_psid, response);
 }
